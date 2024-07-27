@@ -132,7 +132,6 @@ def generate_text(
                                       for index, intermediate_step in enumerate(intermediate_steps)]
 
                 answer = output['output']
-                answer = f"The answer is {answer}. The queries used to get this answer are:\n{str(intermediate_steps)}"
                 api_response = {'queries_used_for_answer': str(intermediate_steps), 'answer': answer}
             else:
                 output_text = 'Could not resolve appropriate function and determine an answer.'
