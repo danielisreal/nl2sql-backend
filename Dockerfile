@@ -17,9 +17,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8080
 
 # Define environment variable
+ENV BIGQUERY_DATASET mock_diabetes_datamart
+ENV CLOUD_TASKS_QUEUE public-chat
+ENV CLOUD_TASKS_QUEUE_REGION us-central1
 ENV GOOGLE_CLOUD_PROJECT ibx-sql-informatics-project
+ENV GOOGLE_CLOUD_PROJECT_NUMBER 894825327347
 ENV GOOGLE_CLOUD_REGION us-central1
-ENV APP_CHAT_BUCKET ibx-sql-informatics-project.appspot.com
+ENV GOOGLE_CLOUD_BUCKET ibx-sql-informatics-project.appspot.com
 
 # Run main.py when the container launches
 CMD ["python", "main.py"]

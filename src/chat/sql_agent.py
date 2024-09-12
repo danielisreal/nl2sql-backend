@@ -44,8 +44,8 @@ def create_database_sql_agent():
     """Create Database SQL Agent."""
 
     # TODO: Remove hardcoding of sqlalchemy_url
-    project_id = 'ibx-sql-informatics-project'
-    dataset_id = 'mock_diabetes_datamart'
+    project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
+    dataset_id = os.getenv("BIGQUERY_DATASET")
     sqlalchemy_url = f'bigquery://{project_id}/{dataset_id}'
     db = SQLDatabase.from_uri(sqlalchemy_url)
 

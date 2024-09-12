@@ -1,10 +1,9 @@
-import json
 import jsonpickle
 import mimetypes
 import os
 import re
 from google.cloud import storage
-from typing import List, Optional
+from typing import Optional
 from uuid import uuid4
 
 
@@ -19,7 +18,7 @@ def get_chat_history(user_id: str, chat_history_id: Optional[str] = None):
         return []
 
     client = storage.Client()
-    bucket = client.bucket(os.getenv("APP_CHAT_BUCKET", "ibx-sql-informatics-project.appspot.com"))
+    bucket = client.bucket(os.getenv("GOOGLE_CLOUD_BUCKET"))
     blob = bucket.blob(f"users/{user_id}/chats/{chat_history_id}.txt")
 
     if blob.exists():
@@ -31,7 +30,7 @@ def get_chat_history(user_id: str, chat_history_id: Optional[str] = None):
 def save_chat_history(user_id: str, chat_history_id: str, chat_history):
     """Save updated chat history back to Google Cloud Storage."""
     client = storage.Client()
-    bucket = client.bucket(os.getenv("APP_CHAT_BUCKET", "ibx-sql-informatics-project.appspot.com"))
+    bucket = client.bucket(os.getenv("GOOGLE_CLOUD_BUCKET"))
     blob = bucket.blob(f"users/{user_id}/chats/{chat_history_id}.txt")
 
     if isinstance(chat_history, list):
@@ -46,7 +45,7 @@ def save_chat_history(user_id: str, chat_history_id: str, chat_history):
 def upload_image_to_gcs(user_id: str, chat_history_id: str, image_bytes, image_mime_type):
     """Uploads image bytes to GCS bucket with a random UUID as the file name."""
     storage_client = storage.Client()
-    bucket_name = os.getenv("APP_CHAT_BUCKET", "ibx-sql-informatics-project.appspot.com")
+    bucket_name = os.getenv("GOOGLE_CLOUD_BUCKET")
     bucket = storage_client.bucket(bucket_name)
 
     # Get the file extension from the MIME type

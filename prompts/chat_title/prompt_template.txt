@@ -1,6 +1,0 @@
-Write a short, descriptive title in 5 words or fewer for the input text. The title should capture the essence of the text in a concise manner.
-
-Input Text:
-{input_text}
-
-Title:
