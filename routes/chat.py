@@ -265,7 +265,7 @@ def update_firestore(user_id, chat_history_id, output_text):
     })
 
 
-@chat_bp.route("/get-chat-title", methods=["POST"])
+@chat_bp.route("/title", methods=["POST"])
 def get_chat_title():
     """Generate a title for the chat."""
     # Verify authentication token
