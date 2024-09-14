@@ -97,7 +97,7 @@ def generate_text(
                 elif function_call_name == 'get_diabetes_data_output':
                     agent_executor = create_database_sql_agent()
                     args = dict(response.candidates[0].content.parts[0].function_call.args)
-                    output = agent_executor.invoke(f"{args['question']}")
+                    output = agent_executor.invoke(f"{system_instruction}\n{args['question']}")
                     intermediate_steps = []
                     for index, step in enumerate(output['intermediate_steps'][1:]):
                         intermediate_step = step[0].to_json()['kwargs']['tool_input']
@@ -110,13 +110,14 @@ def generate_text(
                     answer = output['output']
 
                     instructions = (
-                        "Provide the answer and below the answer include and explain"
-                        " each and every query used for the answer"
+                        "Summarize the output answer. Below the output answer include and explain"
+                        " each and every query used for the answer."
+                        " Always include the output answer and the queries used for the output answer."
                     )
                     api_response = {
-                        'queries_used_for_answer': str(intermediate_steps),
+                        'queries_used_for_output_answer': str(intermediate_steps),
                         'instructions': instructions,
-                        'answer': answer}
+                        'output_answer': answer}
                     response_part = Part.from_function_response(
                         name=function_call_name,
                         response={"content": api_response},
