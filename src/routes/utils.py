@@ -59,10 +59,13 @@ def create_cloud_task(url, payload, **kwargs):
     # Add any additional kwargs to the task payload
     task_payload = {**payload, **kwargs}
 
+    # Determine instance url
+    instance_url = f'https://{instance_name}-{project_number}.{project_region}.run.app{url}'
+
     task = {
         'http_request': {
             'http_method': tasks_v2.HttpMethod.POST,
-            'url': f'https://{instance_name}-{project_number}.{project_region}.run.app',
+            'url': instance_url,
             'body': json.dumps(task_payload).encode(),
             'headers': {'Content-Type': 'application/json'}
         }

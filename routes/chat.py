@@ -81,7 +81,6 @@ def task_chat():
     text = data['text']
     user_id = data['user_id']
     chat_history_id = data['chat_history_id']
-    system_instruction = data['system_instruction']
     image_gcs_path = data['image_gcs_path']
     image_mime_type = data['image_mime_type']
     audio_bytes = data['audio_bytes']
@@ -197,35 +196,6 @@ def process_image_data(request, user_id, chat_history_id):
     return None, None
 
 
-def create_background_task(text, user_id, chat_history_id, system_instruction,
-                           image_gcs_path, image_mime_type, audio_bytes, audio_mime_type):
-    """Create a background task for processing the chat request."""
-    client = tasks_v2.CloudTasksClient()
-    task = {
-        'http_request': {
-            'http_method': tasks_v2.HttpMethod.POST,
-            'url': 'https://public-chat-hkz47oofua-uc.a.run.app/process-chat',
-            'body': json.dumps({
-                'text': text,
-                'user_id': user_id,
-                'chat_history_id': chat_history_id,
-                'system_instruction': system_instruction,
-                'image_gcs_path': image_gcs_path,
-                'image_mime_type': image_mime_type,
-                'audio_bytes': audio_bytes,
-                'audio_mime_type': audio_mime_type,
-            }).encode(),
-            'headers': {
-                'Content-type': 'application/json'
-            }
-        }
-    }
-
-    project_id = os.getenv("GOOGLE_CLOUD_PROJECT", "ibx-sql-informatics-project")
-    parent = client.queue_path(project_id, "us-central1", 'public-chat')
-    client.create_task(request={'parent': parent, 'task': task})
-
-
 def prepare_chat_contents(text, audio_bytes, audio_mime_type, image_gcs_path, image_mime_type):
     """Prepare contents for chat generation."""
     contents = []
@@ -268,19 +238,13 @@ def update_firestore(user_id, chat_history_id, output_text):
 @chat_bp.route("/title", methods=["POST"])
 def get_chat_title():
     """Generate a title for the chat."""
-    # Verify authentication token
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({'error': 'No authorization token provided'}), 401
+    # Verify the authentication token
+    auth_result = endpoint_utils.verify_auth_token(request)
+    if isinstance(auth_result, tuple):
+        return auth_result
 
-    try:
-        auth_token = auth_header.split(' ')[1]
-        decoded_token = auth.verify_id_token(auth_token)
-        _ = decoded_token['uid']
-    except IndexError:
-        return jsonify({'error': 'Invalid authorization header format'}), 401
-    except auth.InvalidIdTokenError:
-        return jsonify({'error': 'Invalid authorization token'}), 401
+    decoded_token = auth_result
+    _ = decoded_token['uid']
 
     # Parse JSON data from request
     data = endpoint_utils.parse_json_data(request)
