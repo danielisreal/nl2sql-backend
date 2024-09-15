@@ -10,7 +10,7 @@ from typing import Optional
 
 
 def get_langchain_llm(
-    project_id: Optional[str] = os.getenv("GOOGLE_CLOUD_PROJECT", "ibx-sql-informatics-project"),
+    project_id: Optional[str] = os.getenv("GOOGLE_CLOUD_PROJECT"),
     location: Optional[str] = "us-central1",
     model_name: str = "claude-3-5-sonnet@20240620",
     max_output_tokens: int = 4096,
