@@ -13,7 +13,7 @@ def generate(
     """Generate."""
 
     client = AnthropicVertex(region="us-east5",
-                             project_id=os.getenv("GOOGLE_CLOUD_PROJECT", "ibx-sql-informatics-project"))
+                             project_id=os.getenv("GOOGLE_CLOUD_PROJECT"))
 
     message = client.messages.create(
         max_tokens=max_output_tokens,
@@ -39,7 +39,7 @@ def stream(
     """Stream."""
 
     client = AnthropicVertex(region="us-east5",
-                             project_id=os.getenv("GOOGLE_CLOUD_PROJECT", "ibx-sql-informatics-project"))
+                             project_id=os.getenv("GOOGLE_CLOUD_PROJECT"))
 
     with client.messages.stream(
         max_tokens=max_output_tokens,
