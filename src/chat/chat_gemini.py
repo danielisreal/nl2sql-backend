@@ -135,7 +135,7 @@ def generate_text(
                 response = chat.send_message(response_parts)
     except Exception as e:
         print(f"Error occurred: {e}\n{traceback.format_exc()}")
-        output_text = f"Please try again. An unexpected error occurred: {traceback.format_exc()}"
+        output_text = f"Please try again. An unexpected error occurred."
 
     # Save chat history
     save_chat_history(user_id, chat_history_id, chat.history)
