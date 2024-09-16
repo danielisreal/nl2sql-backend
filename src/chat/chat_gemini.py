@@ -76,8 +76,7 @@ def generate_text(
         chat = function_calling_model_instance.start_chat()
 
     try:
-        # Initialize chat and send initial message
-        chat = function_calling_model_instance.start_chat()
+        # Send initial message
         response = chat.send_message(prompt)
 
         # Initialize tracking variables
