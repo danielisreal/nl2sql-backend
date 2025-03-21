@@ -1,6 +1,5 @@
 import os
 import time
-
 from dotenv import load_dotenv
 from flask import Flask, Response
 from firebase_admin import credentials, initialize_app
