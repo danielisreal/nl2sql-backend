@@ -58,7 +58,7 @@ This repository contains the backend implementation for the NL2SQL project. It i
 ## Getting Started
 
 ### Prerequisites
-- Python 3.11
+- Python 3.10+
 - Docker (optional for containerized deployment)
 - Google Cloud SDK (for local development and deployment)
 
