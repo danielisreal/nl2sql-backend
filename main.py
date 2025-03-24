@@ -5,9 +5,7 @@ from flask import Flask, Response
 from firebase_admin import credentials, initialize_app
 from flask_cors import CORS
 from random_word import RandomWords
-
 from routes.chat import chat_bp
-
 
 # Load environment variables
 load_dotenv()
@@ -31,7 +29,7 @@ initialize_app(cred)
 
 app.register_blueprint(chat_bp)
 
-
+# Test routes
 @app.route("/hello-world")
 def hello_world():
     """Example Hello World route."""
